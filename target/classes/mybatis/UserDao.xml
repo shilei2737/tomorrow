@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tomorrow.entity.User">
+	<select id="getUser" parameterType="com.tomorrow.entity.User"
+		resultType="com.tomorrow.entity.User">
+		SELECT * FROM user WHERE name=#{username}
+	</select>
+	<select id="getAllUser" resultType="com.tomorrow.entity.User">
+		SELECT * FROM user
+	</select>
+	<select id="getUserByName" parameterType="String"
+		resultType="com.tomorrow.entity.User">
+		SELECT * FROM user WHERE name=#{username}
+	</select>
+	<select id="getUserIdList" resultType="com.tomorrow.entity.User">
+		SELECT name FROM user 
+	</select>
+	
+	<insert id="addUser" parameterType="com.tomorrow.entity.User"
+		flushCache="true">
+		INSERT INTO user (name,age) VALUES
+		(#{username},#{age},#{address})
+	</insert>
+	<insert id="insertList" parameterType="java.util.List"
+		flushCache="true">
+		INSERT INTO user (name,age,address)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.name},#{item.age},#{item.address})
+		</foreach>
+	</insert>
+	
+	<update id="updateUser" parameterType="com.tomorrow.entity.User">
+		UPDATE user SET name =
+		#{name} WHERE id=#{id}
+	</update>
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user WHERE
+		id=#{id}
+	</delete>
+</mapper>

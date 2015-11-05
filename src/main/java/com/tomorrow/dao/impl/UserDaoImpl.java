@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public User getUserByName(String userName) {
 		SqlSession session = sqlSessionFactory.openSession();
-		User user = (User) session.selectOne("com.dynamo.entity.User.getUserByName",userName);
+		User user = (User) session.selectOne("com.tomorrow.entity.User.getUserByName",userName);
 		session.close();
 		return user;
 	}
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public List<User> getAllUser() {
 		SqlSession session = sqlSessionFactory.openSession();
-		List<User> userList = session.selectList("com.dynamo.entity.User.getAllUser");
+		List<User> userList = session.selectList("com.tomorrow.entity.User.getAllUser");
 		session.close();
 		return userList;
 	}
@@ -94,7 +94,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public void addUsers(List<User> list) {
 		SqlSession session = sqlSessionFactory.openSession();
-		session.insert("com.dynamo.entity.User.insertList", list);
+		session.insert("com.tomorrow.entity.User.insertList", list);
 		session.close();
 	}
 
