@@ -1,10 +1,3 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * FileName: RedisService.java
- * Author:   Administrator
- * Date:     2015年9月25日 上午10:11:17
- * Description: 
- */
 package com.tomorrow.redis.service;
 
 import java.util.List;
@@ -16,14 +9,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-/**
- * 〈一句话是什么〉<br>
- * 〈详细描述做什么〉
- *
- * @author Administrator
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
- */
 @Service(value = "redisService")
 public class RedisService {
 

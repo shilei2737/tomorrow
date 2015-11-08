@@ -1,20 +1,5 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * FileName: User.java
- * Author:   Administrator
- * Date:     2015年9月23日 上午11:54:34
- * Description: 
- */
 package com.tomorrow.entity;
 
-/**
- * 〈一句话是什么〉<br> 
- * 〈详细描述做什么〉
- *
- * @author Administrator
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
- */
 public class User {
 	private long id;
 	private String name;
