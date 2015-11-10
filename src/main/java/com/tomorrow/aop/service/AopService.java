@@ -1,7 +1,5 @@
-package com.tomorrow.service.impl;
+package com.tomorrow.aop.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -11,12 +9,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
 public class AopService {
-	private final static Log log = LogFactory.getLog(AopService.class);
+	private Logger log = LoggerFactory.getLogger(AopService.class);
 
 	// 配置切入点,该方法无方法体,主要为方便同类中其他方法使用此处配置的切入点
 	@Pointcut("execution(* com.tomorrow.service.impl..*(..))")

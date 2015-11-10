@@ -21,7 +21,8 @@
 		base-package="com.tomorrow.controller,
 		com.tomorrow.redis.service,
 		com.tomorrow.service.impl,
-		com.tomorrow.dao.impl" />
+		com.tomorrow.dao.impl,
+		com.tomorrow.aop.service" />
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
