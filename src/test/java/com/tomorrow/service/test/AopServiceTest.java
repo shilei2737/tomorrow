@@ -20,7 +20,7 @@ public class AopServiceTest {
 	
 	@Test
 	public void testGetList(){
-		userService.getAllUser();
+		userService.getUserByName("summer");
 	}
 	
 }

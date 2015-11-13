@@ -29,6 +29,7 @@ public class AopService {
 	@Before("aspect()")
 	public void before(JoinPoint joinPoint) {
 		if (log.isInfoEnabled()) {
+			System.out.println("before " + joinPoint);
 			log.info("before " + joinPoint);
 		}
 	}
@@ -37,6 +38,7 @@ public class AopService {
 	@After("aspect()")
 	public void after(JoinPoint joinPoint) {
 		if (log.isInfoEnabled()) {
+			System.out.println("after " + joinPoint);
 			log.info("after " + joinPoint);
 		}
 	}
@@ -49,11 +51,14 @@ public class AopService {
 			((ProceedingJoinPoint) joinPoint).proceed();
 			long end = System.currentTimeMillis();
 			if (log.isInfoEnabled()) {
+				System.out.println("around " + joinPoint + "\tUse time : " + (end - start) + " ms!");
 				log.info("around " + joinPoint + "\tUse time : " + (end - start) + " ms!");
 			}
 		} catch (Throwable e) {
 			long end = System.currentTimeMillis();
 			if (log.isInfoEnabled()) {
+				System.out.println("around " + joinPoint + "\tUse time : " + (end - start) + " ms with exception : "
+				        + e.getMessage());
 				log.info("around " + joinPoint + "\tUse time : " + (end - start) + " ms with exception : "
 				        + e.getMessage());
 			}
@@ -64,6 +69,7 @@ public class AopService {
 	@AfterReturning("aspect()")
 	public void afterReturn(JoinPoint joinPoint) {
 		if (log.isInfoEnabled()) {
+			System.out.println("afterReturn " + joinPoint);
 			log.info("afterReturn " + joinPoint);
 		}
 	}
@@ -72,6 +78,7 @@ public class AopService {
 	@AfterThrowing(pointcut = "aspect()", throwing = "ex")
 	public void afterThrow(JoinPoint joinPoint, Exception ex) {
 		if (log.isInfoEnabled()) {
+			System.out.println("afterThrow " + joinPoint + "\t" + ex.getMessage());
 			log.info("afterThrow " + joinPoint + "\t" + ex.getMessage());
 		}
 	}

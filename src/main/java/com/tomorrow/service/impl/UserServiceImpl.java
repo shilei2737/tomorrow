@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.tomorrow.cache.annotation.ServiceCache;
 import com.tomorrow.dao.UserDao;
 import com.tomorrow.entity.User;
 import com.tomorrow.service.UserService;
@@ -17,6 +18,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Override
+	@ServiceCache(expire=60*2)
 	public User getUserByName(String userName) {
 		return userDao.getUserByName(userName);
 	}

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context 
@@ -12,7 +11,9 @@
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/aop
-		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/cache
+		http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
 
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:annotation-driven />
@@ -22,7 +23,8 @@
 		com.tomorrow.redis.service,
 		com.tomorrow.service.impl,
 		com.tomorrow.dao.impl,
-		com.tomorrow.aop.service" />
+		com.tomorrow.aop.service
+		com.tomorrow.cache.annotation" />
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -35,6 +37,14 @@
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 		p:host-name="127.0.0.1" p:port="6379" />
 
+	<!-- redis template definition -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connection-factory-ref="jedisConnectionFactory" />
+
+	<!-- declare Redis Cache Manager -->
+	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"
+		c:template-ref="redisTemplate" />
+
 	<!-- 返回数据gson转化 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -45,7 +55,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- 激活自动代理功能 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 </beans>
