@@ -11,7 +11,7 @@
 	</select>
 	<select id="getUserByName" parameterType="String"
 		resultType="com.tomorrow.entity.User">
-		SELECT * FROM user WHERE name=#{username}
+		SELECT * FROM user WHERE name=#{userName}
 	</select>
 	<select id="getUserIdList" resultType="com.tomorrow.entity.User">
 		SELECT name FROM user 
