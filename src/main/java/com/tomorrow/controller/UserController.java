@@ -40,7 +40,7 @@ public class UserController {
 			userList = userService.getAllUser();
 			String allUserJson = gson.toJson(userList);
 			System.out.println(allUserJson);
-			redisService.set(redisKeyName, allUserJson);
+			redisService.put(redisKeyName, allUserJson);
 			return userList;
 		}else{
 			System.out.println("get form redis");

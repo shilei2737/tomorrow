@@ -38,8 +38,12 @@ public class RedisService {
 		return jedis;
 	}
 
-	public String set(String key, String value) {
+	public String put(String key, String value) {
 		return this.getJedis().set(key, value);
+	}
+	
+	public String put(String key,int seconds, String value) {
+		return this.getJedis().setex(key, seconds, value);
 	}
 
 	public String get(String key) {

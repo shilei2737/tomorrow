@@ -57,5 +57,5 @@
 	</bean>
 
 	<!-- 激活自动代理功能 -->
-	<!-- <aop:aspectj-autoproxy proxy-target-class="true" /> -->
+	<aop:aspectj-autoproxy proxy-target-class="false"/> 
 </beans>

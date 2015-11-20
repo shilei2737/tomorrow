@@ -7,9 +7,10 @@
  */
 package com.tomorrow.cache.annotation;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,76 +20,85 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.tomorrow.entity.User;
+import com.tomorrow.redis.service.RedisService;
+import com.tomorrow.utils.ServiceCacheUtils;
+
 @Component
 @Aspect
 public class ServiceCacheAnnotationAspect {
+
 	private static Logger log = LoggerFactory.getLogger(ServiceCacheAnnotationAspect.class);
 
-	// 记录方法对应的 @ServiceCache 标注对象
-	private Map<String, Map<String, ServiceCache>> cacheConfig = new HashMap<String, Map<String, ServiceCache>>();
+	@Resource
+	RedisService redisService;
+
+	private Gson gson = new Gson();
+	private Object syncLock = new Object();
 
 	@Around("(@within(org.springframework.stereotype.Service)||@within(org.springframework.stereotype.Repository))"
 	        + "&& @annotation(com.tomorrow.cache.annotation.ServiceCache)")
 	private Object cacheProcess(ProceedingJoinPoint jp) throws Throwable {
 		Class<?> targetClz = jp.getTarget().getClass();
+		String methodName = jp.getSignature().getName();
 		if (!(jp.getSignature() instanceof MethodSignature)) {
 			log.warn("该方法接口无法启用缓存功能: {}", jp.getSignature().toLongString());
 			return jp.proceed();
 		}
 
 		MethodSignature methodSign = (MethodSignature) jp.getSignature();
-		ServiceCache sc = findServiceCache(targetClz, methodSign.getMethod());
+		ServiceCache sc = ServiceCacheUtils.single().findServiceCache(targetClz, methodSign.getMethod());
 		if (sc == null)
 			return jp.proceed();
 
 		int expire = sc.value() >= 0 ? sc.value() : sc.expire();
-		System.out.println("expire:"+expire);
-		
+		if (expire > 0) {
+			String cacheKey = ServiceCacheUtils.single().buildCacheKey(sc, targetClz, methodName, jp.getArgs());
+			Object rval = null;
+			if (sc.sync()) {// 判断是否进行同步操作
+				synchronized (syncLock) {
+					rval = cacheInvoke(sc, jp, cacheKey, expire);
+				}
+			} else {
+				rval = cacheInvoke(sc, jp, cacheKey, expire);
+			}
+			return (rval instanceof Blank) ? null : rval;
+		}
+
 		return jp.proceed();
 	}
 
-	ServiceCache findServiceCache(Class<?> targetClz, Method targetMethod) {
-		Map<String, ServiceCache> classCacheConfig = cacheConfig.get(targetClz.getName());
-		if (classCacheConfig == null) {
-			classCacheConfig = cacheConfig.get(targetClz.getName());
-			if (classCacheConfig == null) {
-				classCacheConfig = new HashMap<String, ServiceCache>();
-				Method[] methods = targetClz.getMethods();
-				for (Method method : methods) {
-					ServiceCache sc = method.getAnnotation(ServiceCache.class);
-					if (sc != null) {
-						classCacheConfig.put(this.methodSignature(method.getName(), method.getParameterTypes()), sc);
-					}
-				}
-				cacheConfig.put(targetClz.getName(), classCacheConfig);
+	/**
+	 * 方法调用
+	 * 
+	 * @param method
+	 * @param args
+	 * @param cacheKey
+	 * @param expire
+	 * @return
+	 * @throws Throwable
+	 */
+	private Object cacheInvoke(ServiceCache sc, ProceedingJoinPoint jp, String cacheKey, int expire) throws Throwable {
+		Class<?> returnClass = ((MethodSignature)jp.getSignature()).getReturnType();
+		log.debug("Load from cache for key : {}", cacheKey);
+		Object rval = redisService.get(cacheKey);
+		if (rval == null) {
+			log.info("Miss from cache, load backend for key : {}", cacheKey);
+			rval = jp.proceed();
+			rval = (rval == null && sc.nullPattern()) ? Blank.INST : rval;
+			if (rval != null) {
+				redisService.put(cacheKey, expire, gson.toJson(rval));
 			}
+		}else{
+			return gson.fromJson(rval.toString(), returnClass);
 		}
-		return classCacheConfig.get(this.methodSignature(targetMethod.getName(), targetMethod.getParameterTypes()));
+		return rval;
 	}
-	
-	private String methodSignature(String method, Object[] args) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(method);
-		sb.append("(");
-		if(args != null && args.length > 0){
-			for (int size = args.length, i = 0; i < size; i++) {
-				appendType(sb, (args[i] instanceof Class)? (Class<?>)args[i] : args[i].getClass());
-				if (i < size - 1) {
-					sb.append(",");
-				}
-			}
-		}
-		sb.append(")");
-		return sb.toString();
-	}
-	
-	private void appendType(StringBuilder sb, Class<?> type) {
-		if (type.isArray()) {
-			appendType(sb, type.getComponentType());
-			sb.append("[]");
-		}
-		else {
-			sb.append(type.getName());
-		}
+
+	private static class Blank implements Serializable {
+		private static final long serialVersionUID = 3203712628835590212L;
+		private static final Blank INST = new Blank();
 	}
 }

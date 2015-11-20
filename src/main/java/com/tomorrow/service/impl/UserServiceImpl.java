@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	@Override
-	@ServiceCache(expire=60*2)
+	@ServiceCache(expire = 60 * 2, includeKeys = { "userName" })
 	public User getUserByName(String userName) {
 		return userDao.getUserByName(userName);
 	}
