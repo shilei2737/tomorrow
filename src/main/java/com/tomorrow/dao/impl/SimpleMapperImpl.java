@@ -1,10 +1,3 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * FileName: SimpleMapperImpl.java
- * Author:   Administrator
- * Date:     2015年11月19日 下午4:26:45
- * Description: 
- */
 package com.tomorrow.dao.impl;
 
 import org.apache.ibatis.session.SqlSession;

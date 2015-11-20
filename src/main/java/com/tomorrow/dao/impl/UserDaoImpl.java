@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
 import com.tomorrow.dao.CommonDao;

@@ -1,10 +1,3 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * FileName: SimpleSqlSessionImpl.java
- * Author:   Administrator
- * Date:     2015年11月19日 下午4:30:20
- * Description: 
- */
 package com.tomorrow.dao.impl;
 
 import java.util.List;
@@ -16,14 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.tomorrow.dao.SimpleSqlSession;
 
-/**
- * 〈一句话是什么〉<br> 
- * 〈详细描述做什么〉
- *
- * @author Administrator
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
- */
 public class SimpleSqlSessionImpl implements SimpleSqlSession {
 
 	private SqlSession sqlSession;

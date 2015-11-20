@@ -1,14 +1,6 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * FileName: ServiceCacheAnnotationAspect.java
- * Author:   Administrator
- * Date:     2015年11月13日 下午3:46:46
- * Description: 
- */
 package com.tomorrow.cache.annotation;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -21,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.tomorrow.entity.User;
 import com.tomorrow.redis.service.RedisService;
 import com.tomorrow.utils.ServiceCacheUtils;
 
