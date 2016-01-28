@@ -50,14 +50,4 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/addList")
-	public String addList(){
-		List<User> list = new ArrayList<>(10002);
-		Random random = new Random();
-		for (long index = 0; index < 10000 ; index ++) {
-			list.add(new User((random.nextInt(20) + 20)+"", random.nextInt(20) + 20, "address"));
-		}
-		userService.addUsers(list);
-		return "success";
-	}
 }
