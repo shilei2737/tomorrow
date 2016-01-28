@@ -13,14 +13,14 @@ import com.tomorrow.service.UserService;
         "classpath:spring/spring-mybatis.xml",
         "classpath:spring/spring-servlet.xml",
 })
-public class AopServiceTest {
+public class ServiceCacheTest {
 	
 	@Autowired
 	private UserService userService;
 	
 	@Test
 	public void testGetList(){
-		System.out.println(userService.getUserByName("summer"));
+		System.out.println(userService.getUserByName("laien"));
 	}
 	
 }

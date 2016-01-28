@@ -90,9 +90,9 @@ public class ServiceCacheUtils {
 		String wholeKey = StringUtils.join(new String[] { targetClz.getName(), methodName, argsKey }, POINT);
 		if (log.isDebugEnabled())
 			log.debug("ServiceCache for key : {}", wholeKey);
-		String sigKey = StringUtils.join(
-		        new String[] { targetClz.getSimpleName(), methodName }, POINT);
-		return sigKey;
+//		String sigKey = StringUtils.join(
+//		        new String[] { targetClz.getSimpleName(), methodName }, POINT);
+		return wholeKey;
 	}
 
 	private static boolean isBassClassType(Class<?> type) {
