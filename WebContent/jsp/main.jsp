@@ -1,23 +1,16 @@
 <html>
 <head>
-<title>Spring MVC Tutorial by Crunchify - Hello World Spring MVC
-	Example</title>
+<title>
+	Spring MVC Tutorial by Crunchify - Hello World Spring MVC Example
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 	welcome
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$.ajax({
-				url : "getList",
-				sync : false,
-				type : "GET",
-				dataType : "json",
-				success : function(data) {
-					console.log(data);
-				}
-			});
-		});
-	</script>
+	<div ng-app="">
+ 	<p>名字 : <input type="text" ng-model="name"></p>
+ 	<h1 ng-bind ="name"></h1>
+</div>
 </body>
+<script type="text/javascript" src="js/bower_components/angular/angular.js"></script>
 </html>
